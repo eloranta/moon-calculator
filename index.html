@@ -6,7 +6,8 @@
 
 <script>
 const xValues = generateHalfHourSlots();
-const yValues = moonElevation();
+const yValues1 = moonElevation();
+const yValues2 = moonElevation();
 
 new Chart("myChart", {
   type: "line",
@@ -15,10 +16,14 @@ new Chart("myChart", {
     datasets: [{
       fill: false,
       lineTension: 0,
-      backgroundColor: "rgba(0,0,255,1.0)",
-      borderColor: "rgba(0,0,255,0.1)",
-      data: yValues
-    }]
+      borderColor: "red",
+      data: yValues1
+    },{
+      fill: false,
+      lineTension: 0,
+      borderColor: "green",
+      data: yValues2
+	}]
   },
   options: {
     legend: {display: false},
@@ -43,8 +48,9 @@ function generateHalfHourSlots() {
 
 function moonElevation() {
   const elevations = [];
+  const max_value = Math.random()*50.0;
   for (let h = 0; h <= 24; h+=0.5) {
-	const elevation = 50.0*Math.sin(Math.PI*h/24.0);
+	const elevation = max_value*Math.sin(Math.PI*h/24.0);
 	elevations.push(elevation);
   }
   return elevations;
