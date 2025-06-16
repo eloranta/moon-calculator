@@ -2,10 +2,10 @@
 <html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <body>
-<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+<canvas id="myChart" style="width:100%;max-width:1000px"></canvas>
 
 <script>
-const xValues = [50,60,70,80,90,100,110,120,130,140,150];
+const xValues = generateHalfHourSlots();
 const yValues = [7,8,8,9,9,9,10,11,14,14,15];
 
 new Chart("myChart", {
@@ -27,6 +27,19 @@ new Chart("myChart", {
     }
   }
 });
+
+function generateHalfHourSlots() {
+  const slots = [];
+  for (let h = 0; h <= 24; h++) {
+    for (let m of [0, 30]) {
+      if (h === 24 && m > 0) break; // skip 24:30
+      const hour = String(h).padStart(2, '0');
+      const minute = String(m).padStart(2, '0');
+      slots.push(`${hour}:${minute}`);
+    }
+  }
+  return slots;
+}
 </script>
 
 </body>
