@@ -16,7 +16,7 @@ input.addEventListener("input", function () {
 if (isValidLocator(input.value))
 	updateChart(myChart, moonElevation(), input.value);
 else
-	;
+	updateChart(myChart, [], "");
 });
   
 const xValues = generateHalfHourSlots();
@@ -27,14 +27,12 @@ const myChart = new Chart("myChart", {
     labels: xValues,
     datasets: [{
       fill: true,
-      lineTension: 0,
-      borderColor: "green",
-      data: []
+      borderColor: "Green",
+      backgroundColor: "LightGreen"
     },{
       fill: false,
-      lineTension: 0,
-      borderColor: "red",
-      data: []
+      borderColor: "Red",
+      backgroundColor: "LightRed"
 	}]
   },
   options: {
@@ -79,6 +77,7 @@ function updateChart(chart, data, myLocator){
  chart.data.datasets[0].label = myLocator.toUpperCase();
  chart.update(); 
 }
+
 </script>
 </body>
 </html>
