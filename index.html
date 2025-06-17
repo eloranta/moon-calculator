@@ -20,13 +20,25 @@
 <script>
 
 document.addEventListener("DOMContentLoaded", () => {
+
   document.getElementById("myLocator").focus();
+  document.getElementById("myLocator").value = localStorage.getItem("myLocator");
+  const input = document.getElementById("myLocator");
+  if (isValidLocator(input.value)) {
+		updateChart(myChart, moonElevation(), input.value);
+		input.classList.remove("error");
+	}
+else {
+		updateChart(myChart, [], "");
+		input.classList.add("error");
+}
 });
 
 const input = document.getElementById("myLocator");
 input.addEventListener("input", function () {
 if (isValidLocator(input.value)) {
 		updateChart(myChart, moonElevation(), input.value);
+		localStorage.setItem("myLocator", input.value);
 		input.classList.remove("error");
 	}
 else {
