@@ -3,20 +3,30 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <body>
 <div>
-  <label for="locatorA">My Locator</label>
-  <input type="text" placeholder="6 chars locator" id="locatorA" value="" maxlength="6" required />
+  <label for="myLocator">My Locator</label>
+  <input type="text" placeholder="6 chars locator" id="myLocator" value="" maxlength="6" required />
 </div>
 
 <canvas id="myChart" style="width:100%;max-width:1000px"></canvas>
 
+<style>
+  .error {
+    background-color: #ffcccc; /* light red */
+  }
+</style>
+
 <script>
 
-const input = document.getElementById("locatorA");
+const input = document.getElementById("myLocator");
 input.addEventListener("input", function () {
-if (isValidLocator(input.value))
-	updateChart(myChart, moonElevation(), input.value);
-else
-	updateChart(myChart, [], "");
+if (isValidLocator(input.value)) {
+		updateChart(myChart, moonElevation(), input.value);
+		input.classList.remove("error");
+	}
+else {
+		updateChart(myChart, [], "");
+		input.classList.add("error");
+}
 });
   
 const xValues = generateHalfHourSlots();
