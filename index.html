@@ -2,27 +2,39 @@
 <html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <body>
+<div>
+  <label for="locatorA">My Locator</label>
+  <input type="text" placeholder="6 chars locator" id="locatorA" value="" maxlength="6" required />
+</div>
+
 <canvas id="myChart" style="width:100%;max-width:1000px"></canvas>
 
 <script>
-const xValues = generateHalfHourSlots();
-const yValues1 = moonElevation();
-const yValues2 = moonElevation();
 
-new Chart("myChart", {
+const input = document.getElementById("locatorA");
+input.addEventListener("input", function () {
+if (isValidLocator(input.value))
+	updateChart(myChart, moonElevation(), input.value);
+else
+	;
+});
+  
+const xValues = generateHalfHourSlots();
+
+const myChart = new Chart("myChart", {
   type: "line",
   data: {
     labels: xValues,
     datasets: [{
-      fill: false,
+      fill: true,
       lineTension: 0,
-      borderColor: "red",
-      data: yValues1
+      borderColor: "green",
+      data: []
     },{
       fill: false,
       lineTension: 0,
-      borderColor: "green",
-      data: yValues2
+      borderColor: "red",
+      data: []
 	}]
   },
   options: {
@@ -56,9 +68,18 @@ function moonElevation() {
   return elevations;
 }
 
+function isValidLocator(value) {
+      value = value.toUpperCase();
+      const regex = /^[A-R][A-R][0-9][0-9][A-X][A-X]$/;
+      return regex.test(value);
+}
 
+function updateChart(chart, data, myLocator){
+ chart.data.datasets[0].data = data;
+ chart.data.datasets[0].label = myLocator.toUpperCase();
+ chart.update(); 
+}
 </script>
-
 </body>
 </html>
 
