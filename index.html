@@ -17,6 +17,10 @@
 
 <script>
 
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("myLocator").focus();
+});
+
 const input = document.getElementById("myLocator");
 input.addEventListener("input", function () {
 if (isValidLocator(input.value)) {
