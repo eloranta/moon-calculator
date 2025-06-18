@@ -76,13 +76,13 @@ function moonElevation() {
 }
 
 function isValidLocator(value) {
-      value = value.toUpperCase();
-      const regex = /^[A-R][A-R][0-9][0-9][A-X][A-X]$/;
-      return regex.test(value);
+  value = value.toUpperCase();
+  const regex = /^[A-R][A-R][0-9][0-9][A-X][A-X]$/;
+  return regex.test(value);
 }
 
 function updateChart(chart, index, data, myLocator){
- chart.data.datasets[index].data = data;
- chart.data.datasets[index].label = myLocator.toUpperCase();
- chart.update(); 
+  chart.data.datasets[index].data = data;
+  chart.data.datasets[index].label = myLocator.toUpperCase();
+  chart.update(); 
 }
