@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("myLocator").focus();
-  document.getElementById("myLocator").value = localStorage.getItem("myLocator");
   const input = document.getElementById("myLocator");
+	input.focus();
+  input.value = localStorage.getItem("myLocator");
   if (isValidLocator(input.value)) {
     updateChart(myChart, 0, moonElevation(), input.value);
     input.classList.remove("error");
@@ -36,7 +36,7 @@ input2.addEventListener("input", function () {
     input2.classList.add("error");
   }
 });
-  
+
 const xValues = generateHalfHourSlots();
 
 const myChart = new Chart("myChart", {
