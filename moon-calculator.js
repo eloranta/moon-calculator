@@ -13,11 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   input2.addEventListener("input", () => handleInputChange(input2, 1));
 });
 
-const today = new Date().toISOString().split("T")[0];
-document.getElementById("date").value = today;
-
 const xValues = generateHalfHourSlots();
-
 const styles = getComputedStyle(document.documentElement);
 const myChart = new Chart("myChart", {
   type: "line",
@@ -41,6 +37,10 @@ const myChart = new Chart("myChart", {
   }
 });
 
+const dateInput = document.getElementById("date");
+const today = new Date().toISOString().split("T")[0];
+dateInput.value = today;
+
 function handleInputChange(input, datasetIndex) {
   const value = input.value;
 
@@ -48,6 +48,7 @@ function handleInputChange(input, datasetIndex) {
     updateChart(myChart, datasetIndex, moonElevation(), value);
     if (input.id === "myLocator") {
       localStorage.setItem("myLocator", value);
+      document.getElementById("locator1").textContent = value.toUpperCase();
     }
     input.classList.remove("error");
   } else {
@@ -91,4 +92,49 @@ function updateChart(chart, index, data, myLocator){
   chart.update(); 
 }
 
+function julianDayNumber(year, month, day, hour) {
+  return 367 * year - div((7 * (year + (div((month + 9), 12)))), 4) + div((275 * month), 9) + day - 730530 + hour / 24.0
+}
 
+setInterval(() => {
+  const input1 = document.getElementById("myLocator");
+  const locator1 = input1.value.toUpperCase();
+  if (isValidLocator(locator1)) {
+    document.getElementById("locator1").textContent = locator1;
+  } else {
+    clearValues();
+    return;
+  }
+  
+  
+  const input2 = document.getElementById("dxLocator");
+  const locator2 = isValidLocator(input2.value) ? input2.value.toUpperCase() : "";
+  document.getElementById("locator2").textContent = locator2;
+
+  const dateInput = document.getElementById('date').value;
+  if (dateInput) {
+    const today = new Date().toISOString(); //.split("T")[1]
+    document.getElementById("day").textContent = today;
+  }
+
+  document.getElementById("longitude1").textContent = longitude(locator1).toFixed(2);
+
+}, 1000);
+
+function clearValues() {
+    document.getElementById("locator1").textContent = "";
+}
+
+
+function longitude(locator) {
+    locator = locator.toUpperCase()
+    let field = 20 * (locator.charCodeAt(0) - 65) - 180
+    let grid = 2 * (locator.charCodeAt(2) - 48)
+    let subGrid = 5 * (locator.charCodeAt(4) - 65) / 60
+    return field + grid + subGrid + 1/24
+}
+
+
+
+
+ 
