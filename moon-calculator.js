@@ -1,41 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   document.getElementById("myLocator").focus();
   document.getElementById("myLocator").value = localStorage.getItem("myLocator");
   const input = document.getElementById("myLocator");
   if (isValidLocator(input.value)) {
-		updateChart(myChart, 0, moonElevation(), input.value);
-		input.classList.remove("error");
-	}
-else {
-		updateChart(myChart, 0, [], "");
-		input.classList.add("error");
-}
+    updateChart(myChart, 0, moonElevation(), input.value);
+    input.classList.remove("error");
+  }
+  else {
+    updateChart(myChart, 0, [], "");
+    input.classList.add("error");
+  }
 });
 
 const input = document.getElementById("myLocator");
 input.addEventListener("input", function () {
-if (isValidLocator(input.value)) {
-		updateChart(myChart, 0, moonElevation(), input.value);
-		localStorage.setItem("myLocator", input.value);
-		input.classList.remove("error");
-	}
-else {
-		updateChart(myChart, 0, [], "");
-		input.classList.add("error");
-}
+  if (isValidLocator(input.value)) {
+    updateChart(myChart, 0, moonElevation(), input.value);
+    localStorage.setItem("myLocator", input.value);
+    input.classList.remove("error");
+  }
+  else {
+    updateChart(myChart, 0, [], "");
+    input.classList.add("error");
+  }
 });
 
 const input2 = document.getElementById("dxLocator");
 input2.addEventListener("input", function () {
-if (isValidLocator(input2.value)) {
-		updateChart(myChart, 1, moonElevation(), input2.value);
-		input2.classList.remove("error");
-	}
-else {
-		updateChart(myChart, 1, [], "");
-		input2.classList.add("error");
-}
+  if (isValidLocator(input2.value)) {
+    updateChart(myChart, 1, moonElevation(), input2.value);
+    input2.classList.remove("error");
+  }
+  else {
+    updateChart(myChart, 1, [], "");
+    input2.classList.add("error");
+  }
 });
   
 const xValues = generateHalfHourSlots();
@@ -52,7 +51,7 @@ const myChart = new Chart("myChart", {
       fill: true,
       borderColor: "Red",
       backgroundColor: "Salmon"
-	}]
+  }]
   },
   options: {
     legend: {display: true},
@@ -79,8 +78,8 @@ function moonElevation() {
   const elevations = [];
   const max_value = Math.random()*50.0;
   for (let h = 0; h <= 24; h+=0.5) {
-	const elevation = max_value*Math.sin(Math.PI*h/24.0);
-	elevations.push(elevation);
+  const elevation = max_value*Math.sin(Math.PI*h/24.0);
+  elevations.push(elevation);
   }
   return elevations;
 }
