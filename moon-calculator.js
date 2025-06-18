@@ -6,26 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
   input1.focus();
   input1.value = localStorage.getItem("myLocator") || "";
   handleInputChange(input1, 0, true);
+  handleInputChange(input2, 1, true);
 
   // Attach input listeners
   input1.addEventListener("input", () => handleInputChange(input1, 0));
   input2.addEventListener("input", () => handleInputChange(input2, 1));
 });
 
-function handleInputChange(input, datasetIndex, skipStorage = false) {
-  const value = input.value;
-
-  if (isValidLocator(value)) {
-    updateChart(myChart, datasetIndex, moonElevation(), value);
-    if (!skipStorage && input.id === "myLocator") {
-      localStorage.setItem("myLocator", value);
-    }
-    input.classList.remove("error");
-  } else {
-    updateChart(myChart, datasetIndex, [], "");
-    input.classList.add("error");
-  }
-}
+const today = new Date().toISOString().split("T")[0];
+document.getElementById("date").value = today;
 
 const xValues = generateHalfHourSlots();
 
@@ -51,6 +40,21 @@ const myChart = new Chart("myChart", {
     }
   }
 });
+
+function handleInputChange(input, datasetIndex, skipStorage = false) {
+  const value = input.value;
+
+  if (isValidLocator(value)) {
+    updateChart(myChart, datasetIndex, moonElevation(), value);
+    if (!skipStorage && input.id === "myLocator") {
+      localStorage.setItem("myLocator", value);
+    }
+    input.classList.remove("error");
+  } else {
+    updateChart(myChart, datasetIndex, [], "");
+    input.classList.add("error");
+  }
+}
 
 function generateHalfHourSlots() {
   const slots = [];
