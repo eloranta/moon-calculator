@@ -1,41 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("myLocator");
-	input.focus();
-  input.value = localStorage.getItem("myLocator");
-  if (isValidLocator(input.value)) {
-    updateChart(myChart, 0, moonElevation(), input.value);
-    input.classList.remove("error");
-  }
-  else {
-    updateChart(myChart, 0, [], "");
-    input.classList.add("error");
-  }
+  const input1 = document.getElementById("myLocator");
+  const input2 = document.getElementById("dxLocator");
+
+  // Set initial state for input1
+  input1.focus();
+  input1.value = localStorage.getItem("myLocator") || "";
+  handleInputChange(input1, 0, true);
+
+  // Attach input listeners
+  input1.addEventListener("input", () => handleInputChange(input1, 0));
+  input2.addEventListener("input", () => handleInputChange(input2, 1));
 });
 
-const input = document.getElementById("myLocator");
-input.addEventListener("input", function () {
-  if (isValidLocator(input.value)) {
-    updateChart(myChart, 0, moonElevation(), input.value);
-    localStorage.setItem("myLocator", input.value);
+function handleInputChange(input, datasetIndex, skipStorage = false) {
+  const value = input.value;
+
+  if (isValidLocator(value)) {
+    updateChart(myChart, datasetIndex, moonElevation(), value);
+    if (!skipStorage && input.id === "myLocator") {
+      localStorage.setItem("myLocator", value);
+    }
     input.classList.remove("error");
-  }
-  else {
-    updateChart(myChart, 0, [], "");
+  } else {
+    updateChart(myChart, datasetIndex, [], "");
     input.classList.add("error");
   }
-});
-
-const input2 = document.getElementById("dxLocator");
-input2.addEventListener("input", function () {
-  if (isValidLocator(input2.value)) {
-    updateChart(myChart, 1, moonElevation(), input2.value);
-    input2.classList.remove("error");
-  }
-  else {
-    updateChart(myChart, 1, [], "");
-    input2.classList.add("error");
-  }
-});
+}
 
 const xValues = generateHalfHourSlots();
 
