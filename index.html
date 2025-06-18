@@ -25,11 +25,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("myLocator").value = localStorage.getItem("myLocator");
   const input = document.getElementById("myLocator");
   if (isValidLocator(input.value)) {
-		updateChart(myChart, moonElevation(), input.value);
+		updateChart(myChart, 0, moonElevation(), input.value);
 		input.classList.remove("error");
 	}
 else {
-		updateChart(myChart, [], "");
+		updateChart(myChart, 0, [], "");
 		input.classList.add("error");
 }
 });
@@ -37,13 +37,25 @@ else {
 const input = document.getElementById("myLocator");
 input.addEventListener("input", function () {
 if (isValidLocator(input.value)) {
-		updateChart(myChart, moonElevation(), input.value);
+		updateChart(myChart, 0, moonElevation(), input.value);
 		localStorage.setItem("myLocator", input.value);
 		input.classList.remove("error");
 	}
 else {
-		updateChart(myChart, [], "");
+		updateChart(myChart, 0, [], "");
 		input.classList.add("error");
+}
+});
+
+const input2 = document.getElementById("dxLocator");
+input2.addEventListener("input", function () {
+if (isValidLocator(input2.value)) {
+		updateChart(myChart, 1, moonElevation(), input2.value);
+		input2.classList.remove("error");
+	}
+else {
+		updateChart(myChart, 1, [], "");
+		input2.classList.add("error");
 }
 });
   
@@ -58,9 +70,9 @@ const myChart = new Chart("myChart", {
       borderColor: "Green",
       backgroundColor: "LightGreen"
     },{
-      fill: false,
+      fill: true,
       borderColor: "Red",
-      backgroundColor: "LightRed"
+      backgroundColor: "Salmon"
 	}]
   },
   options: {
@@ -100,9 +112,9 @@ function isValidLocator(value) {
       return regex.test(value);
 }
 
-function updateChart(chart, data, myLocator){
- chart.data.datasets[0].data = data;
- chart.data.datasets[0].label = myLocator.toUpperCase();
+function updateChart(chart, index, data, myLocator){
+ chart.data.datasets[index].data = data;
+ chart.data.datasets[index].label = myLocator.toUpperCase();
  chart.update(); 
 }
 
