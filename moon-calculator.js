@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set initial state for input1
   input1.focus();
   input1.value = localStorage.getItem("myLocator") || "";
-  handleInputChange(input1, 0, true);
-  handleInputChange(input2, 1, true);
+  handleInputChange(input1, 0);
+  handleInputChange(input2, 1);
 
   // Attach input listeners
   input1.addEventListener("input", () => handleInputChange(input1, 0));
@@ -41,12 +41,12 @@ const myChart = new Chart("myChart", {
   }
 });
 
-function handleInputChange(input, datasetIndex, skipStorage = false) {
+function handleInputChange(input, datasetIndex) {
   const value = input.value;
 
   if (isValidLocator(value)) {
     updateChart(myChart, datasetIndex, moonElevation(), value);
-    if (!skipStorage && input.id === "myLocator") {
+    if (input.id === "myLocator") {
       localStorage.setItem("myLocator", value);
     }
     input.classList.remove("error");
@@ -90,3 +90,5 @@ function updateChart(chart, index, data, myLocator){
   chart.data.datasets[index].label = myLocator.toUpperCase();
   chart.update(); 
 }
+
+
