@@ -29,18 +29,19 @@ function handleInputChange(input, datasetIndex, skipStorage = false) {
 
 const xValues = generateHalfHourSlots();
 
+const styles = getComputedStyle(document.documentElement);
 const myChart = new Chart("myChart", {
   type: "line",
   data: {
     labels: xValues,
     datasets: [{
       fill: true,
-      borderColor: "Green",
-      backgroundColor: "LightGreen"
+      borderColor: styles.getPropertyValue('--chart-0-border').trim(),
+      backgroundColor: styles.getPropertyValue('--chart-0-fill').trim()
     },{
       fill: true,
-      borderColor: "Red",
-      backgroundColor: "Salmon"
+      borderColor: styles.getPropertyValue('--chart-1-border').trim(),
+      backgroundColor: styles.getPropertyValue('--chart-1-fill').trim()
   }]
   },
   options: {

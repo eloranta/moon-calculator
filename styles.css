@@ -1,7 +1,14 @@
+
+:root {
+  --chart-0-border: green;
+  --chart-0-fill: lightgreen;
+  --chart-1-border: red;
+  --chart-1-fill: salmon;
+}
+
 .error {
   background-color: #ffcccc; /* light red */
 }
-
 
 .chart-canvas {
   width: 100%;
