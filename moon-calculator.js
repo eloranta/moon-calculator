@@ -97,34 +97,23 @@ function julianDayNumber(year, month, day, hour) {
 }
 
 setInterval(() => {
-  const input1 = document.getElementById("myLocator");
-  const locator1 = input1.value.toUpperCase();
-  if (isValidLocator(locator1)) {
-    document.getElementById("locator1").textContent = locator1;
-  } else {
-    clearValues();
-    return;
-  }
-  
-  
-  const input2 = document.getElementById("dxLocator");
-  const locator2 = isValidLocator(input2.value) ? input2.value.toUpperCase() : "";
-  document.getElementById("locator2").textContent = locator2;
+  const locator1 = document.getElementById("myLocator").value.toUpperCase();
+  const valid1 = isValidLocator(locator1);
 
-  const dateInput = document.getElementById('date').value;
-  if (dateInput) {
-    const today = new Date().toISOString(); //.split("T")[1]
-    document.getElementById("day").textContent = today;
-  }
-
-  document.getElementById("longitude1").textContent = longitude(locator1).toFixed(2);
-
+  const locator2 = document.getElementById("dxLocator").value.toUpperCase();
+  const valid2 = isValidLocator(locator2);
+ 
+  document.getElementById("locator1").textContent = valid1 ? locator1 : "";
+  document.getElementById("locator2").textContent = valid2 ? locator2 : "";
+  document.getElementById("longitude1").textContent = valid1 ? longitude(locator1).toFixed(2) : "";
+  document.getElementById("longitude2").textContent = valid2 ? longitude(locator2).toFixed(2) : "";
+  document.getElementById("latitude1").textContent = valid1 ? latitude(locator1).toFixed(2) : "";
+  document.getElementById("latitude2").textContent = valid2 ? latitude(locator2).toFixed(2) : "";
 }, 1000);
 
 function clearValues() {
     document.getElementById("locator1").textContent = "";
 }
-
 
 function longitude(locator) {
     locator = locator.toUpperCase()
@@ -134,7 +123,13 @@ function longitude(locator) {
     return field + grid + subGrid + 1/24
 }
 
-
+function latitude(locator) {
+  locator = locator.toUpperCase()
+  let field = 10 * (locator.charCodeAt(1) - 65) - 90
+  let grid = locator.charCodeAt(3) - 48
+  let subGrid = 2.5 * (locator.charCodeAt(5) - 65) / 60
+  return field + grid + subGrid + 1/48
+}
 
 
  
