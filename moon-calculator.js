@@ -126,6 +126,8 @@ setInterval(() => {
   document.getElementById("sunXEcliptic").textContent = sunXEcliptic(dayNumber);
   document.getElementById("sunYEcliptic").textContent = sunYEcliptic(dayNumber);
   document.getElementById("sunXEquatorial").textContent = sunXEquatorial(dayNumber);
+  document.getElementById("sunYEquatorial").textContent = sunYEquatorial(dayNumber);
+  document.getElementById("sunZEquatorial").textContent = sunZEquatorial(dayNumber);
 
 
 

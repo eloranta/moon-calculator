@@ -127,4 +127,25 @@ function sunXEquatorial(dayNumber) {
   return sunXEcliptic(dayNumber)
 }
 
+function earthObliquity(dayNumber) {
+  return 23.4393 - 3.563e-7 * dayNumber
+}
+
+function earthGclat(latitude) {
+  return latitude - 0.1924 * sin(2 * latitude)
+}
+
+function earthRho(latitude) {
+  return 0.99833 + 0.00167 * cos(2 * latitude)
+}
+
+function sunYEquatorial(dayNumber) {
+  return sunYEcliptic(dayNumber) * cos(earthObliquity(dayNumber))
+}
+
+function sunZEquatorial(dayNumber) {
+  return sunYEcliptic(dayNumber) * sin(earthObliquity(dayNumber))
+}
+
+
 
