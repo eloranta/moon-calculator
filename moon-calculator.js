@@ -109,6 +109,22 @@ setInterval(() => {
   document.getElementById("longitude2").textContent = valid2 ? longitude(locator2).toFixed(2) : "";
   document.getElementById("latitude1").textContent = valid1 ? latitude(locator1).toFixed(2) : "";
   document.getElementById("latitude2").textContent = valid2 ? latitude(locator2).toFixed(2) : "";
+  
+  const date = new Date();
+  utcYear = date.getUTCFullYear();
+  utcMonth = date.getUTCMonth() + 1
+  utcDay = date.getUTCDate();
+  document.getElementById("utcDate").textContent = date.toISOString().slice(0, 10);
+  document.getElementById("utcTime").textContent = date.toISOString().slice(11, 19);
+  
+  
+  
+  utcHour = date.getUTCHours();
+  utcMinutes = date.getUTCMinutes();
+  utcSeconds = date.getUTCSeconds();
+  
+  
+  
 }, 1000);
 
 function clearValues() {
