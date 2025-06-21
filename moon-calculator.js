@@ -80,20 +80,10 @@ function moonElevation() {
   return elevations;
 }
 
-function isValidLocator(value) {
-  value = value.toUpperCase();
-  const regex = /^[A-R][A-R][0-9][0-9][A-X][A-X]$/;
-  return regex.test(value);
-}
-
 function updateChart(chart, index, data, myLocator){
   chart.data.datasets[index].data = data;
   chart.data.datasets[index].label = myLocator.toUpperCase();
   chart.update(); 
-}
-
-function julianDayNumber(year, month, day, hour) {
-  return 367 * year - div((7 * (year + (div((month + 9), 12)))), 4) + div((275 * month), 9) + day - 730530 + hour / 24.0
 }
 
 setInterval(() => {
@@ -120,25 +110,27 @@ setInterval(() => {
   const utcHour = date.getUTCHours();
   const utcMinutes = date.getUTCMinutes();
   const utcSeconds = date.getUTCSeconds();
-  document.getElementById("dayNumber").textContent = julianDayNumber(utcYear, utcMonth, utcDay, utcHour + utcMinutes / 60.0 + utcSeconds / 3600.0);
+  const dayNumber = julianDayNumber(utcYear, utcMonth, utcDay, utcHour + utcMinutes / 60.0 + utcSeconds / 3600.0);
+  document.getElementById("dayNumber").textContent = dayNumber;
+
+  document.getElementById("longitudeOfPerihelion").textContent = sunLongitudeOfPerihelion(dayNumber);
+  document.getElementById("sunEccentricity").textContent = sunEccentricity(dayNumber);
+  document.getElementById("sunMeanAnomaly").textContent = sunMeanAnomaly(dayNumber);
+  document.getElementById("sunMeanLongitude").textContent = sunMeanLongitude(dayNumber);
+  document.getElementById("sunEccentricAnomaly").textContent = sunEccentricAnomaly(dayNumber);
+  document.getElementById("sunX").textContent = sunX(dayNumber);
+  document.getElementById("sunY").textContent = sunY(dayNumber);
+  document.getElementById("sunDistance").textContent = sunDistance(dayNumber);
+  document.getElementById("sunTrueAnomaly").textContent = sunTrueAnomaly(dayNumber);
+  document.getElementById("sunLongitude").textContent = sunLongitude(dayNumber);
+  document.getElementById("sunXEcliptic").textContent = sunXEcliptic(dayNumber);
+  document.getElementById("sunYEcliptic").textContent = sunYEcliptic(dayNumber);
+  document.getElementById("sunXEquatorial").textContent = sunXEquatorial(dayNumber);
+
+
 
 }, 1000);
 
-function longitude(locator) {
-    locator = locator.toUpperCase()
-    let field = 20 * (locator.charCodeAt(0) - 65) - 180
-    let grid = 2 * (locator.charCodeAt(2) - 48)
-    let subGrid = 5 * (locator.charCodeAt(4) - 65) / 60
-    return field + grid + subGrid + 1/24
-}
-
-function latitude(locator) {
-  locator = locator.toUpperCase()
-  let field = 10 * (locator.charCodeAt(1) - 65) - 90
-  let grid = locator.charCodeAt(3) - 48
-  let subGrid = 2.5 * (locator.charCodeAt(5) - 65) / 60
-  return field + grid + subGrid + 1/48
-}
 
 
 
