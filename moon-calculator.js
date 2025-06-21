@@ -140,10 +140,6 @@ function latitude(locator) {
   return field + grid + subGrid + 1/48
 }
 
-function div(x, y) {
-  return ~~(x / y) // integer division
-}
-
 
 
  
