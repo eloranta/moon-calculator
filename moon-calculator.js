@@ -111,25 +111,18 @@ setInterval(() => {
   document.getElementById("latitude2").textContent = valid2 ? latitude(locator2).toFixed(2) : "";
   
   const date = new Date();
-  utcYear = date.getUTCFullYear();
-  utcMonth = date.getUTCMonth() + 1
-  utcDay = date.getUTCDate();
   document.getElementById("utcDate").textContent = date.toISOString().slice(0, 10);
   document.getElementById("utcTime").textContent = date.toISOString().slice(11, 19);
-  
-  
-  
-  utcHour = date.getUTCHours();
-  utcMinutes = date.getUTCMinutes();
-  utcSeconds = date.getUTCSeconds();
-  
-  
-  
-}, 1000);
 
-function clearValues() {
-    document.getElementById("locator1").textContent = "";
-}
+  const utcYear = date.getUTCFullYear();
+  const utcMonth = date.getUTCMonth() + 1
+  const utcDay = date.getUTCDate();
+  const utcHour = date.getUTCHours();
+  const utcMinutes = date.getUTCMinutes();
+  const utcSeconds = date.getUTCSeconds();
+  document.getElementById("dayNumber").textContent = julianDayNumber(utcYear, utcMonth, utcDay, utcHour + utcMinutes / 60.0 + utcSeconds / 3600.0);
+
+}, 1000);
 
 function longitude(locator) {
     locator = locator.toUpperCase()
@@ -146,6 +139,11 @@ function latitude(locator) {
   let subGrid = 2.5 * (locator.charCodeAt(5) - 65) / 60
   return field + grid + subGrid + 1/48
 }
+
+function div(x, y) {
+  return ~~(x / y) // integer division
+}
+
 
 
  
