@@ -98,7 +98,8 @@ setInterval(() => {
   const longitude1 = valid1 ? longitude(locator1) : 0;
   document.getElementById("longitude1").textContent = valid1 ? longitude1.toFixed(2) : "";
   document.getElementById("longitude2").textContent = valid2 ? longitude(locator2).toFixed(2) : "";
-  document.getElementById("latitude1").textContent = valid1 ? latitude(locator1).toFixed(2) : "";
+  const latitude1 = valid1 ? latitude(locator1) : 0;
+  document.getElementById("latitude1").textContent = valid1 ? latitude1.toFixed(2) : "";
   document.getElementById("latitude2").textContent = valid2 ? latitude(locator2).toFixed(2) : "";
   
   const date = new Date();
@@ -114,7 +115,7 @@ setInterval(() => {
   const dayNumber = julianDayNumber(utcYear, utcMonth, utcDay, utcHour + utcMinutes / 60.0 + utcSeconds / 3600.0);
   document.getElementById("dayNumber").textContent = dayNumber;
 
-  document.getElementById("longitudeOfPerihelion").textContent = sunLongitudeOfPerihelion(dayNumber);
+/*   document.getElementById("longitudeOfPerihelion").textContent = sunLongitudeOfPerihelion(dayNumber);
   document.getElementById("sunEccentricity").textContent = sunEccentricity(dayNumber);
   document.getElementById("sunMeanAnomaly").textContent = sunMeanAnomaly(dayNumber);
   document.getElementById("sunMeanLongitude").textContent = sunMeanLongitude(dayNumber);
@@ -133,6 +134,39 @@ setInterval(() => {
   document.getElementById("sunDeclination").textContent = sunDeclination(dayNumber);
   document.getElementById("sunGMST0").textContent = sunGMST0(dayNumber);
   document.getElementById("sunLocalSiderealTime").textContent = valid1 ? sunLocalSiderealTime(dayNumber, longitude1) : "";
+  document.getElementById("sunHourAngle").textContent = valid1 ? sunHourAngle(dayNumber, longitude1) : "";
+  document.getElementById("sunX2").textContent = valid1 ? sunX2(dayNumber, longitude1) : "";
+  document.getElementById("sunY2").textContent = valid1 ? sunY2(dayNumber, longitude1) : "";
+  document.getElementById("sunZ2").textContent = valid1 ? sunZ2(dayNumber, longitude1) : "";
+  document.getElementById("sunXHorizontal").textContent = valid1 ? sunXHorizontal(dayNumber, longitude1, latitude1) : "";
+  document.getElementById("sunYHorizontal").textContent = valid1 ? sunYHorizontal(dayNumber, longitude1, latitude1) : "";
+  document.getElementById("sunZHorizontal").textContent = valid1 ? sunZHorizontal(dayNumber, longitude1, latitude1) : ""; */
+  document.getElementById("sunAzimuth").textContent = valid1 ? sunAzimuth(dayNumber, longitude1, latitude1) : "";
+  document.getElementById("sunElevation").textContent = valid1 ? sunElevation(dayNumber, longitude1, latitude1) : "";
+
+  document.getElementById("moonLongitudeOfAscendingNode").textContent = moonLongitudeOfAscendingNode(dayNumber);
+  document.getElementById("moonInclination").textContent = moonInclination;
+  document.getElementById("moonArgumentOfPerigee").textContent = moonArgumentOfPerigee(dayNumber);
+  document.getElementById("moonMeanDistance").textContent = moonMeanDistance;
+  document.getElementById("moonEccentricity").textContent = moonEccentricity;
+  document.getElementById("moonMeanAnomaly").textContent = moonMeanAnomaly(dayNumber);
+  const E0 = moonE0(dayNumber);
+  document.getElementById("moonE0").textContent = E0;
+  document.getElementById("moonE1").textContent = moonE1(dayNumber, E0);
+  document.getElementById("moonE").textContent = moonE(dayNumber);
+  document.getElementById("moonX").textContent = moonX(dayNumber);
+  document.getElementById("moonY").textContent = moonY(dayNumber);
+  document.getElementById("moonXeclip").textContent = moonXeclip(dayNumber);
+  document.getElementById("moonYeclip").textContent = moonYeclip(dayNumber);
+  document.getElementById("moonZeclip").textContent = moonZeclip(dayNumber);
+  document.getElementById("moonLongitudeEcl").textContent = moonLongitudeEcl(dayNumber);
+  document.getElementById("moonLatitudeEcl").textContent = moonLatitudeEcl(dayNumber);
+  document.getElementById("moonMeanLongitude").textContent = moonMeanLongitude(dayNumber);
+  document.getElementById("moonMeanElongation").textContent = moonMeanElongation(dayNumber);
+  document.getElementById("moonArgumentOfLatitude").textContent = moonArgumentOfLatitude(dayNumber);
+
+  document.getElementById("moonDLongitude").textContent = moonDLongitude(dayNumber);
+  document.getElementById("moonDLatitude").textContent = moonDLatitude(dayNumber);
 
 
 

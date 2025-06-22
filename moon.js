@@ -165,6 +165,295 @@ function sunLocalSiderealTime(dayNumber, longitude) {
   return sunGMST0(dayNumber) + UT + longitude / 15
 }
 
+function sunHourAngle(dayNumber, longitude) {
+  return rev(sunLocalSiderealTime(dayNumber, longitude) * 15 - sunRightAscension(dayNumber))
+}
+
+function sunX2(dayNumber, longitude) {
+  return cos(sunHourAngle(dayNumber, longitude)) * cos(sunDeclination(dayNumber))
+}
+
+function sunY2(dayNumber, longitude) {
+  return sin(sunHourAngle(dayNumber, longitude)) * cos(sunDeclination(dayNumber))
+}
+
+function sunZ2(dayNumber, longitude) {
+  return sin(sunDeclination(dayNumber))
+}
+
+function sunXHorizontal(dayNumber, longitude, latitude) {
+  return sunX2(dayNumber, longitude) * sin(latitude) - sunZ2(dayNumber, longitude) * cos(latitude)
+}
+
+function sunYHorizontal(dayNumber, longitude, latitude) {
+  return sunY2(dayNumber, longitude)
+}
+
+function sunZHorizontal(dayNumber, longitude, latitude) {
+  return sunX2(dayNumber, longitude) * cos(latitude) + sunZ2(dayNumber, longitude) * sin(latitude)
+}
+
+function sunAzimuth(dayNumber, longitude, latitude) {
+  return rev(atan2(sunYHorizontal(dayNumber, longitude, latitude), sunXHorizontal(dayNumber, longitude, latitude)) + 180.0)
+}
+
+function sunElevation(dayNumber, longitude, latitude) {
+  return asin(sunZHorizontal(dayNumber, longitude, latitude))
+}
+
+// Moon
+
+function moonLongitudeOfAscendingNode(dayNumber) {
+  return 125.1228 - 0.0529538083 * dayNumber
+}
+
+const moonInclination = 5.1454
+  
+function moonArgumentOfPerigee(dayNumber) {
+  return 318.0634 + 0.1643573223 * dayNumber
+}
+
+const moonMeanDistance = 60.2666
+const moonEccentricity = 0.054900
+
+function moonMeanAnomaly(dayNumber) {
+  return rev(115.3654 + 13.0649929509 * dayNumber)
+}
+
+function moonE0(dayNumber) {
+  const M = moonMeanAnomaly(dayNumber)
+  const e = moonEccentricity
+  return M + (180 / Math.PI) * e * sin(M) * (1 + e * cos(M))
+}
+  
+function moonE1(dayNumber, E0) {
+  const M = moonMeanAnomaly(dayNumber)
+  const e = moonEccentricity
+  return E0 - (E0 - (180.0 / Math.PI) * e * sin(E0) - M) / (1 - e * cos(E0))
+}
+
+function moonE(dayNumber) {
+  const E = moonE0(dayNumber)
+  const E1 = moonE1(dayNumber, E)
+  return E1
+}
+
+function moonX(dayNumber) {
+  return moonMeanDistance * (cos(moonE(dayNumber)) - moonEccentricity)
+}
+
+function moonY(dayNumber) {
+  const e = moonEccentricity
+  return moonMeanDistance * Math.sqrt(1 - e * e) * sin(moonE(dayNumber))
+}
+
+function moonR(dayNumber) {
+  const x = moonX(dayNumber)
+  const y = moonY(dayNumber)
+  return Math.sqrt(x * x + y * y)
+}
+
+function moonV(dayNumber) {
+  const x = moonX(dayNumber)
+  const y = moonY(dayNumber)
+  return rev(atan2(y, x))
+ }
+
+  function moonXeclip(dayNumber) {
+  const N = moonLongitudeOfAscendingNode(dayNumber)
+  const v = moonV(dayNumber)
+  const w = moonArgumentOfPerigee(dayNumber)
+  return moonR(dayNumber) * (cos(N) * cos(v + w) - sin(N) * sin(v + w) * cos(moonInclination))
+}
+
+function moonYeclip(dayNumber) {
+  const N = moonLongitudeOfAscendingNode(dayNumber)
+  const v = moonV(dayNumber)
+  const w = moonArgumentOfPerigee(dayNumber)
+  return moonR(dayNumber) * (sin(N) * cos(v + w) + cos(N) * sin(v + w) * cos(moonInclination))
+}
+
+function moonZeclip(dayNumber) {
+  const v = moonV(dayNumber)
+  const w = moonArgumentOfPerigee(dayNumber)
+  return moonR(dayNumber) * sin(v + w) * sin(moonInclination)
+}
+
+function moonLongitudeEcl(dayNumber) {
+  return rev(atan2(moonYeclip(dayNumber), moonXeclip(dayNumber)))
+}
+
+function moonLatitudeEcl(dayNumber) {
+  const x = moonXeclip(dayNumber)
+  const y = moonYeclip(dayNumber)
+  return atan2(moonZeclip(dayNumber), Math.sqrt(x * x + y * y))
+}
+
+function moonMeanLongitude(dayNumber) {
+  return moonLongitudeOfAscendingNode(dayNumber) + moonArgumentOfPerigee(dayNumber) + moonMeanAnomaly(dayNumber)
+}
+
+function moonMeanElongation(dayNumber) {
+  return moonMeanLongitude(dayNumber) - sunMeanLongitude(dayNumber)
+}
+
+function moonArgumentOfLatitude(dayNumber) {
+  return moonMeanLongitude(dayNumber) - moonLongitudeOfAscendingNode(dayNumber)
+}
+
+function moonDLongitude(dayNumber) {
+  const Mm = moonMeanAnomaly(dayNumber)
+  const D = moonMeanElongation(dayNumber)
+  const Ms = sunMeanAnomaly(dayNumber)
+  const F = moonArgumentOfLatitude(dayNumber)
+  return -1.274 * sin(Mm - 2*D)
+  +0.658 * sin(2*D)
+  -0.186 * sin(Ms)
+  -0.059 * sin(2*Mm - 2*D)
+  -0.057 * sin(Mm - 2*D + Ms)
+  +0.053 * sin(Mm + 2*D)
+  +0.046 * sin(2*D - Ms)
+  +0.041 * sin(Mm - Ms)
+  -0.035 * sin(D)
+  -0.031 * sin(Mm + Ms)
+  -0.015 * sin(2*F - 2*D)
+  +0.011 * sin(Mm - 4*D)
+}
+
+function moonDLatitude(dayNumber) {
+  const Mm = moonMeanAnomaly(dayNumber)
+  const D = moonMeanElongation(dayNumber)
+  const F = moonArgumentOfLatitude(dayNumber)
+  return -0.173 * sin(F - 2*D)
+  -0.055 * sin(Mm - F - 2*D)
+  -0.046 * sin(Mm + F - 2*D)
+  +0.033 * sin(F + 2*D)
+  +0.017 * sin(2*Mm + F)
+}
+/*
+function moonDDistance(dayNumber,) {
+  const Mm = moonmeanAnomaly(dayNumber)
+  const D = moonmeanElongation(dayNumber)
+  return -0.58 * cos(Mm - 2*D)   // TODO: difference here between Schlyter and Taylor
+  -0.46 * cos(2*D)
+}
+
+function moonLongitude(dayNumber) {
+  return moonLongitudeEcl(dayNumber) + moonDLongitude(dayNumber)
+}
+
+function moonLatitude(dayNumber) {
+  return moonLatitudeEcl(dayNumber) + moonDLatitude(dayNumber)
+}
+
+function moonDistance(dayNumber) {
+  return moonR(dayNumber) + moonDDistance(dayNumber)
+}
+
+function moonX(dayNumber) {
+  return cos(moonLatitude(dayNumber)) * cos(moonLongitude(dayNumber))
+}
+
+function moonY(dayNumber) {
+  return cos(moonLatitude(dayNumber)) * sin(moonLongitude(dayNumber))
+}
+
+function moonZ(dayNumber) {
+  return sin(moonLatitude(dayNumber))
+}
+
+function moonXEquat(dayNumber) {
+  return moonX(dayNumber)
+}
+
+function moonYEquat(dayNumber) {
+  const obliquity = earth.obliquity(dayNumber)
+  return moonY(dayNumber) * cos(obliquity) - moonZ(dayNumber) * sin(obliquity)
+}
+
+function moonZEquat(dayNumber) {
+  const obliquity = earth.obliquity(dayNumber)
+  return moonY(dayNumber) * sin(obliquity) + moonZ(dayNumber) * cos(obliquity)
+}
+
+function moonRightAscension(dayNumber) {
+   return rev(atan2(moonyEquat(dayNumber), moonxEquat(dayNumber)))
+}
+
+function moonDeclination(dayNumber) {
+  const x = moonXEquat(dayNumber)
+  const y = moonYEquat(dayNumber)
+  return atan2(moonZEquat(dayNumber), Math.sqrt(x * x + y * y))
+}
+
+function moonMpar(dayNumber) {
+  return asin(1/moondistance(dayNumber))
+}
+
+function moonHA(dayNumber, longitude) {
+  const LST = sunLocalSiderealTime(dayNumber, longitude) * 15  // this belongs to sun ?
+  const RA = moonrightAscension(dayNumber)
+  return rev(LST - RA)
+}
+
+function moonG(dayNumber, longitude, latitude) {
+  const gclat = earth.gclat(latitude)
+  const HA = moonHA(dayNumber, longitude)
+  return atan(tan(gclat) / cos(HA))
+}
+  
+function moonTopRA(dayNumber, longitude, latitude) {
+  const RA = moonrightAscension(dayNumber)
+  const mpar = moonmpar(dayNumber)
+  const rho = earth.rho(latitude)
+  const gclat = earth.gclat(latitude)
+  const HA = moonHA(dayNumber, longitude)
+  const decl = moondeclination(dayNumber)
+  return RA - mpar * rho * cos(gclat) * sin(HA) / cos(decl)
+}
+
+function moonTopDecl(dayNumber, longitude, latitude) {
+  const decl = moonDeclination(dayNumber)
+  const mpar = moonMpar(dayNumber)
+  const rho = earth.rho(latitude)
+  const gclat = earth.gclat(latitude)
+  const g = moong(dayNumber, longitude, latitude)
+  return decl - mpar * rho * sin(gclat) * sin(g - decl) / sin(g)
+}
+ 
+function moonHA2(dayNumber, longitude, latitude) {
+   const lst = suLocalSiderealTime(dayNumber, longitude) * 15
+   const ra = moontopRA(dayNumber, longitude, latitude)
+   const ha = lst - ra
+   if (ha > 180) ha = ha - 360
+   if (ha < 180) ha = ha + 360
+   return ha
+}
+
+function moonAzimuth(dayNumber, longitude, latitude) {
+  const temp1 = sin(moontopDecl(dayNumber, longitude, latitude))
+  const temp2 = cos(moontopDecl(dayNumber, longitude, latitude))
+  const temp3 = sin(latitude) * temp1 + cos(latitude) * temp2 * cos(moonHA2(dayNumber, longitude, latitude))
+  const temp4 = Math.sqrt(1 - temp3 * temp3)
+  const temp5 = -sin(moonHA2(dayNumber, longitude, latitude)) * temp2 / temp4
+  const temp6 = (temp1 - temp3 * sin(latitude)) / (temp4*cos(latitude))
+  const temp7 = 0
+  if (temp6 < 0) temp7 = (1 - temp6)/temp5
+  if (temp6 > 0) temp7 = temp5 / (1 + temp6)
+  const azimuth = 2 * atan(temp7)
+  if (azimuth < 0) azimuth = azimuth + 360
+  return azimuth
+ }
+
+function moonElevation(dayNumber, longitude, latitude) {
+  const temp1 = sin(moonTopDecl(dayNumber, longitude, latitude))
+  const temp2 = cos(moonTopDecl(dayNumber, longitude, latitude))
+  const temp3 = sin(latitude) * temp1 + cos(latitude) * temp2 * cos(moonHA2(dayNumber, longitude, latitude))
+  const temp4 = Math.sqrt(1 - temp3 * temp3)
+  return atan(temp3 / temp4)
+}
 
 
 
+
+ */
