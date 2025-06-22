@@ -11,8 +11,8 @@ function toDegrees(x) {
 }
 
 function toTime(degrees) {
- hours = Math.floor(degrees / 15)
- minutes = (degrees / 15 - hours) * 60
+ const hours = Math.floor(degrees / 15)
+ const minutes = (degrees / 15 - hours) * 60
  return hours + ":" + Math.floor(minutes)
 }
 
@@ -41,24 +41,23 @@ function atan2(x, y) {
 }
 
 function isValidLocator(value) {
-  value = value.toUpperCase();
   const regex = /^[A-R][A-R][0-9][0-9][A-X][A-X]$/;
-  return regex.test(value);
+  return regex.test(value.toUpperCase());
 }
 
-function longitude(locator) {
-    locator = locator.toUpperCase()
-    field = 20 * (locator.charCodeAt(0) - 65) - 180
-    grid = 2 * (locator.charCodeAt(2) - 48)
-    subGrid = 5 * (locator.charCodeAt(4) - 65) / 60
-    return field + grid + subGrid + 1/24
+function longitude(value) {
+  const locator = value.toUpperCase()
+  const field = 20 * (locator.charCodeAt(0) - 65) - 180
+  const grid = 2 * (locator.charCodeAt(2) - 48)
+  const subGrid = 5 * (locator.charCodeAt(4) - 65) / 60
+  return field + grid + subGrid + 1/24
 }
 
-function latitude(locator) {
-  locator = locator.toUpperCase()
-  field = 10 * (locator.charCodeAt(1) - 65) - 90
-  grid = locator.charCodeAt(3) - 48
-  subGrid = 2.5 * (locator.charCodeAt(5) - 65) / 60
+function latitude(value) {
+  const locator = value.toUpperCase()
+  const field = 10 * (locator.charCodeAt(1) - 65) - 90
+  const grid = locator.charCodeAt(3) - 48
+  const subGrid = 2.5 * (locator.charCodeAt(5) - 65) / 60
   return field + grid + subGrid + 1/48
 }
 
@@ -83,9 +82,9 @@ function sunMeanLongitude(dayNumber) {
 }
 
 function sunEccentricAnomaly(dayNumber) {
-  M = sunMeanAnomaly(dayNumber)
-  e = sunEccentricity(dayNumber)
-  E0 = M + (180 / Math.PI) * e * sin(M) * (1 + e * cos(M))
+  const M = sunMeanAnomaly(dayNumber)
+  const e = sunEccentricity(dayNumber)
+  const E0 = M + (180 / Math.PI) * e * sin(M) * (1 + e * cos(M))
   return E0 // Schlyter
   // return E0 - (E0 - 180 * e * sin(E0) / Math.PI - M) / (1 - e * cos(E0))  // Taylor
 }
@@ -95,19 +94,19 @@ function sunX(dayNumber) {
 }
 
 function sunY(dayNumber) {
-  e = sunEccentricity(dayNumber)
+  const e = sunEccentricity(dayNumber)
   return sin(sunEccentricAnomaly(dayNumber)) * Math.sqrt(1 - e * e)
 }
 
 function sunDistance(dayNumber) {
-  x = sunX(dayNumber)
-  y = sunY(dayNumber)
+  const x = sunX(dayNumber)
+  const y = sunY(dayNumber)
   return Math.sqrt(x * x + y * y)
 }
 
 function sunTrueAnomaly(dayNumber) {
-  x = sunX(dayNumber)
-  y = sunY(dayNumber)
+  const x = sunX(dayNumber)
+  const y = sunY(dayNumber)
   return atan2(y, x)
 }
 
@@ -146,6 +145,26 @@ function sunYEquatorial(dayNumber) {
 function sunZEquatorial(dayNumber) {
   return sunYEcliptic(dayNumber) * sin(earthObliquity(dayNumber))
 }
+
+function sunRightAscension(dayNumber) {
+  return rev(atan2(sunYEquatorial(dayNumber), sunXEquatorial(dayNumber)))
+}
+
+function sunDeclination(dayNumber) {
+  const x = sunXEquatorial(dayNumber)
+  const y = sunYEquatorial(dayNumber)
+  return atan2(sunZEquatorial(dayNumber), Math.sqrt((x * x + y * y)))
+}
+
+function sunGMST0(dayNumber) {
+  return sunMeanLongitude(dayNumber) / 15 + 12
+}
+
+function sunLocalSiderealTime(dayNumber, longitude) {
+  const UT = (dayNumber % 1) * 24
+  return sunGMST0(dayNumber) + UT + longitude / 15
+}
+
 
 
 

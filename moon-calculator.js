@@ -95,7 +95,8 @@ setInterval(() => {
  
   document.getElementById("locator1").textContent = valid1 ? locator1 : "";
   document.getElementById("locator2").textContent = valid2 ? locator2 : "";
-  document.getElementById("longitude1").textContent = valid1 ? longitude(locator1).toFixed(2) : "";
+  const longitude1 = valid1 ? longitude(locator1) : 0;
+  document.getElementById("longitude1").textContent = valid1 ? longitude1.toFixed(2) : "";
   document.getElementById("longitude2").textContent = valid2 ? longitude(locator2).toFixed(2) : "";
   document.getElementById("latitude1").textContent = valid1 ? latitude(locator1).toFixed(2) : "";
   document.getElementById("latitude2").textContent = valid2 ? latitude(locator2).toFixed(2) : "";
@@ -128,6 +129,10 @@ setInterval(() => {
   document.getElementById("sunXEquatorial").textContent = sunXEquatorial(dayNumber);
   document.getElementById("sunYEquatorial").textContent = sunYEquatorial(dayNumber);
   document.getElementById("sunZEquatorial").textContent = sunZEquatorial(dayNumber);
+  document.getElementById("sunRightAscension").textContent = sunRightAscension(dayNumber);
+  document.getElementById("sunDeclination").textContent = sunDeclination(dayNumber);
+  document.getElementById("sunGMST0").textContent = sunGMST0(dayNumber);
+  document.getElementById("sunLocalSiderealTime").textContent = valid1 ? sunLocalSiderealTime(dayNumber, longitude1) : "";
 
 
 
