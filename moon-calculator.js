@@ -1,18 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const input1 = document.getElementById("myLocator");
-  const input2 = document.getElementById("dxLocator");
-
-  // Set initial state for input1
-  input1.focus();
-  input1.value = localStorage.getItem("myLocator") || "";
-  handleInputChange(input1, 0);
-  handleInputChange(input2, 1);
-
-  // Attach input listeners
-  input1.addEventListener("input", () => handleInputChange(input1, 0));
-  input2.addEventListener("input", () => handleInputChange(input2, 1));
-});
-
 const xValues = generateHalfHourSlots();
 const styles = getComputedStyle(document.documentElement);
 const myChart = new Chart("myChart", {
@@ -32,7 +17,7 @@ const myChart = new Chart("myChart", {
   options: {
     legend: {display: true},
     scales: {
-      yAxes: [{ticks: {beginAtZero: true}}],
+      yAxes: [{ticks: {min: 0}}]
     }
   }
 });
@@ -41,11 +26,36 @@ const dateInput = document.getElementById("date");
 const today = new Date().toISOString().split("T")[0];
 dateInput.value = today;
 
-function handleInputChange(input, datasetIndex) {
+
+document.addEventListener("DOMContentLoaded", () => {
+  const input1 = document.getElementById("myLocator");
+  const input2 = document.getElementById("dxLocator");
+
+  const date = new Date();
+  const utcYear = date.getUTCFullYear();
+  const utcMonth = date.getUTCMonth() + 1
+  const utcDay = date.getUTCDate();
+  const dayNumber = julianDayNumber(utcYear, utcMonth, utcDay, 0);
+
+
+  // Set initial state for input1
+  input1.focus();
+  input1.value = localStorage.getItem("myLocator") || "";
+  handleInputChange(input1, 0, dayNumber);
+  handleInputChange(input2, 1, dayNumber);
+
+  // Attach input listeners
+  input1.addEventListener("input", () => handleInputChange(input1, 0, dayNumber));
+  input2.addEventListener("input", () => handleInputChange(input2, 1, dayNumber));
+});
+
+function handleInputChange(input, datasetIndex, dayNumber) {
   const value = input.value;
 
   if (isValidLocator(value)) {
-    updateChart(myChart, datasetIndex, moonElevation(), value);
+	const lon = longitude(value);
+	const lat = latitude(value);
+    updateChart(myChart, datasetIndex, moonElevation2(dayNumber, lon, lat), value);
     if (input.id === "myLocator") {
       localStorage.setItem("myLocator", value);
       document.getElementById("locator1").textContent = value.toUpperCase();
@@ -70,12 +80,13 @@ function generateHalfHourSlots() {
   return slots;
 }
 
-function moonElevation() {
+function moonElevation2(dayNumber, longitude, latitude) {
   const elevations = [];
-  const max_value = Math.random()*50.0;
   for (let h = 0; h <= 24; h+=0.5) {
-  const elevation = max_value*Math.sin(Math.PI*h/24.0);
-  elevations.push(elevation);
+	const elevation = moonElevation(dayNumber + h/24, longitude, latitude);
+	console.log(div(dayNumber) + h/24, longitude, latitude, elevation);
+	
+	elevations.push(elevation);
   }
   return elevations;
 }

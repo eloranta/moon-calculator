@@ -1,5 +1,3 @@
-module.exports = div;
-
 function div(x, y) {
   return ~~(x / y) // integer division
 }
@@ -442,7 +440,7 @@ function moonAzimuth(dayNumber, longitude, latitude) {
   let temp7 = 0
   if (temp6 < 0) temp7 = (1 - temp6)/temp5
   if (temp6 > 0) temp7 = temp5 / (1 + temp6)
-  const azimuth = 2 * atan(temp7)
+  let azimuth = 2 * atan(temp7)
   if (azimuth < 0) azimuth = azimuth + 360
   return azimuth
  }
