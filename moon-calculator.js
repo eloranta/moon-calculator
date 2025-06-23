@@ -17,7 +17,7 @@ const myChart = new Chart("myChart", {
   options: {
     legend: {display: true},
     scales: {
-      yAxes: [{ticks: {min: 0}}]
+      y: {min: 0}
     }
   }
 });
