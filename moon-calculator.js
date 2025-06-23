@@ -154,8 +154,8 @@ setInterval(() => {
   document.getElementById("moonE0").textContent = E0;
   document.getElementById("moonE1").textContent = moonE1(dayNumber, E0);
   document.getElementById("moonE").textContent = moonE(dayNumber);
-  document.getElementById("moonX").textContent = moonX(dayNumber);
-  document.getElementById("moonY").textContent = moonY(dayNumber);
+  document.getElementById("moonx").textContent = moonx(dayNumber);
+  document.getElementById("moony").textContent = moony(dayNumber);
   document.getElementById("moonXeclip").textContent = moonXeclip(dayNumber);
   document.getElementById("moonYeclip").textContent = moonYeclip(dayNumber);
   document.getElementById("moonZeclip").textContent = moonZeclip(dayNumber);
@@ -164,12 +164,28 @@ setInterval(() => {
   document.getElementById("moonMeanLongitude").textContent = moonMeanLongitude(dayNumber);
   document.getElementById("moonMeanElongation").textContent = moonMeanElongation(dayNumber);
   document.getElementById("moonArgumentOfLatitude").textContent = moonArgumentOfLatitude(dayNumber);
-
   document.getElementById("moonDLongitude").textContent = moonDLongitude(dayNumber);
   document.getElementById("moonDLatitude").textContent = moonDLatitude(dayNumber);
-
-
-
+  document.getElementById("moonDDistance").textContent = moonDDistance(dayNumber);
+  document.getElementById("moonLongitude").textContent = moonLongitude(dayNumber);
+  document.getElementById("moonLatitude").textContent = moonLatitude(dayNumber);
+  document.getElementById("moonDistance").textContent = moonDistance(dayNumber);
+  document.getElementById("moonX").textContent = moonX(dayNumber);
+  document.getElementById("moonY").textContent = moonY(dayNumber);
+  document.getElementById("moonZ").textContent = moonZ(dayNumber);
+  document.getElementById("moonXEquat").textContent = moonXEquat(dayNumber);
+  document.getElementById("moonYEquat").textContent = moonYEquat(dayNumber);
+  document.getElementById("moonZEquat").textContent = moonZEquat(dayNumber);
+  document.getElementById("moonRightAscension").textContent = moonRightAscension(dayNumber);
+  document.getElementById("moonDeclination").textContent = moonDeclination(dayNumber);
+  document.getElementById("moonMpar").textContent = moonMpar(dayNumber);
+  document.getElementById("moonHA").textContent = valid1 ? moonHA(dayNumber, longitude1) : "";
+  document.getElementById("moonG").textContent = valid1 ? moonG(dayNumber, longitude1, latitude1) : "";
+  document.getElementById("moonTopRA").textContent = valid1 ? moonTopRA(dayNumber, longitude1, latitude1) : "";
+  document.getElementById("moonTopDecl").textContent = valid1 ? moonTopDecl(dayNumber, longitude1, latitude1) : "";
+  document.getElementById("moonHA2").textContent = valid1 ? moonHA2(dayNumber, longitude1, latitude1) : "";
+  document.getElementById("moonAzimuth").textContent = valid1 ? moonAzimuth(dayNumber, longitude1, latitude1) : "";
+  document.getElementById("moonElevation").textContent = valid1 ? moonElevation(dayNumber, longitude1, latitude1) : "";
 }, 1000);
 
 
