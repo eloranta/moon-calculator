@@ -1,3 +1,5 @@
+module.exports = div;
+
 function div(x, y) {
   return ~~(x / y) // integer division
 }
