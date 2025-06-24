@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --chart-0-border: green;
   --chart-0-fill: lightgreen;
   --chart-1-border: red;
@@ -6,15 +6,14 @@
 }
 
 .error {
-  background-color: #ffcccc; /* light red */
+  background-color: #ffcccc; 
 }
 
 .chart-canvas {
   width: 100%;
-  max-width: 1000px;
 }
 
 .right-margin {
-  margin-right: 12px; /* space between each item */
+  margin-right: 12px; 
 }
-
+ */

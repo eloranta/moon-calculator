@@ -1,17 +1,16 @@
 const xValues = generateHalfHourSlots();
-const styles = getComputedStyle(document.documentElement);
 const myChart = new Chart("myChart", {
   type: "line",
   data: {
     labels: xValues,
     datasets: [{
       fill: true,
-      borderColor: styles.getPropertyValue('--chart-0-border').trim(),
-      backgroundColor: styles.getPropertyValue('--chart-0-fill').trim()
+      borderColor: "Red",
+      backgroundColor: "Salmon"
     },{
       fill: true,
-      borderColor: styles.getPropertyValue('--chart-1-border').trim(),
-      backgroundColor: styles.getPropertyValue('--chart-1-fill').trim()
+      borderColor: "Green",
+      backgroundColor: "LightGreen"
   }]
   },
   options: {
@@ -98,6 +97,7 @@ function updateChart(chart, index, data, myLocator){
 }
 
 setInterval(() => {
+/*
   const locator1 = document.getElementById("myLocator").value.toUpperCase();
   const valid1 = isValidLocator(locator1);
 
@@ -125,8 +125,7 @@ setInterval(() => {
   const utcSeconds = date.getUTCSeconds();
   const dayNumber = julianDayNumber(utcYear, utcMonth, utcDay, utcHour + utcMinutes / 60.0 + utcSeconds / 3600.0);
   document.getElementById("dayNumber").textContent = dayNumber;
-
-/*   document.getElementById("longitudeOfPerihelion").textContent = sunLongitudeOfPerihelion(dayNumber);
+  document.getElementById("longitudeOfPerihelion").textContent = sunLongitudeOfPerihelion(dayNumber);
   document.getElementById("sunEccentricity").textContent = sunEccentricity(dayNumber);
   document.getElementById("sunMeanAnomaly").textContent = sunMeanAnomaly(dayNumber);
   document.getElementById("sunMeanLongitude").textContent = sunMeanLongitude(dayNumber);
@@ -151,7 +150,7 @@ setInterval(() => {
   document.getElementById("sunZ2").textContent = valid1 ? sunZ2(dayNumber, longitude1) : "";
   document.getElementById("sunXHorizontal").textContent = valid1 ? sunXHorizontal(dayNumber, longitude1, latitude1) : "";
   document.getElementById("sunYHorizontal").textContent = valid1 ? sunYHorizontal(dayNumber, longitude1, latitude1) : "";
-  document.getElementById("sunZHorizontal").textContent = valid1 ? sunZHorizontal(dayNumber, longitude1, latitude1) : ""; */
+  document.getElementById("sunZHorizontal").textContent = valid1 ? sunZHorizontal(dayNumber, longitude1, latitude1) : "";
   document.getElementById("sunAzimuth").textContent = valid1 ? sunAzimuth(dayNumber, longitude1, latitude1) : "";
   document.getElementById("sunElevation").textContent = valid1 ? sunElevation(dayNumber, longitude1, latitude1) : "";
 
@@ -197,6 +196,7 @@ setInterval(() => {
   document.getElementById("moonHA2").textContent = valid1 ? moonHA2(dayNumber, longitude1, latitude1) : "";
   document.getElementById("moonAzimuth").textContent = valid1 ? moonAzimuth(dayNumber, longitude1, latitude1) : "";
   document.getElementById("moonElevation").textContent = valid1 ? moonElevation(dayNumber, longitude1, latitude1) : "";
+  */
 }, 1000);
 
 
