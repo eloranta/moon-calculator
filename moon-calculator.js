@@ -1,4 +1,5 @@
 const xValues = generateHalfHourSlots();
+
 const myChart = new Chart("myChart", {
   type: "line",
   data: {
@@ -6,36 +7,66 @@ const myChart = new Chart("myChart", {
     datasets: [{
       fill: true,
       borderColor: "Red",
-      backgroundColor: "Salmon"
+      backgroundColor: 'rgba(120, 0, 0, 0.2)',
+      tension: 0.3
     },{
       fill: true,
       borderColor: "Green",
-      backgroundColor: "LightGreen"
+      backgroundColor: 'rgba(0, 123, 255, 0.2)',
+      tension: 0.3
   }]
   },
   options: {
     legend: {display: true},
     scales: {
       y: {min: 0}
-    }
+    },
+  plugins: {
+    tooltip: {
+      callbacks: {
+        label: function (tooltipItem) {
+          const elevation = Number(tooltipItem.raw).toFixed(1);
+          const azimuth = '0';
+          return `Az: ${azimuth}, El: ${elevation}`;
+
+          // const label = tooltipItem.dataset.label;
+          // const index = context.dataIndex
+          // const datasetIndex = context.datasetIndex;
+          // const data = datasetIndex === 0 ? window.dataA : window.dataB;
+          // const point = data[index];
+          // if (!point || point.y === null) return '';
+          // return `${point.y}`;
+          // const elevation = Math.round(point.y);
+          // const azimuth = Math.round(point.az);
+          // const dateObj = new Date(point.fullDate);
+          // const day = String(dateObj.getUTCDate()).padStart(2, '0');
+          // const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          // const month = monthNames[dateObj.getUTCMonth()];
+          // const year = String(dateObj.getUTCFullYear()).slice(2);
+          // return `${day} ${month} ${year} - Az: ${azimuth}°, El: ${elevation}°`;
+        }
+      }
+    },
+    legend: { display: false }
   }
+}
+
 });
 
 const dateInput = document.getElementById("date");
 const today = new Date().toISOString().split("T")[0];
 dateInput.value = today;
 
-
 document.addEventListener("DOMContentLoaded", () => {
   const input1 = document.getElementById("myLocator");
   const input2 = document.getElementById("dxLocator");
+  const input3 = document.getElementById("date");
 
   const date = new Date();
   const utcYear = date.getUTCFullYear();
   const utcMonth = date.getUTCMonth() + 1
   const utcDay = date.getUTCDate();
   const dayNumber = julianDayNumber(utcYear, utcMonth, utcDay, 0);
-
 
   // Set initial state for input1
   input1.focus();
@@ -46,18 +77,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // Attach input listeners
   input1.addEventListener("input", () => handleInputChange(input1, 0, dayNumber));
   input2.addEventListener("input", () => handleInputChange(input2, 1, dayNumber));
+  input3.addEventListener("input", () => handleDateChange());
 });
+
+function handleDateChange() {
+  const input1 = document.getElementById("myLocator");
+  const input2 = document.getElementById("dxLocator");
+  const date = document.getElementById("date").value.split('-');
+  const dayNumber = julianDayNumber(Number(date[0]), Number(date[1]), Number(date[2]), 0);
+  handleInputChange(input1, 0, dayNumber);
+  handleInputChange(input2, 1, dayNumber);
+}
 
 function handleInputChange(input, datasetIndex, dayNumber) {
   const value = input.value;
 
   if (isValidLocator(value)) {
-	const lon = longitude(value);
-	const lat = latitude(value);
+    const lon = longitude(value);
+    const lat = latitude(value);
     updateChart(myChart, datasetIndex, moonElevation2(dayNumber, lon, lat), value);
     if (input.id === "myLocator") {
       localStorage.setItem("myLocator", value);
-      document.getElementById("locator1").textContent = value.toUpperCase();
+//      document.getElementById("locator1").textContent = value.toUpperCase();
     }
     input.classList.remove("error");
   } else {
@@ -82,10 +123,8 @@ function generateHalfHourSlots() {
 function moonElevation2(dayNumber, longitude, latitude) {
   const elevations = [];
   for (let h = 0; h <= 24; h+=0.5) {
-	const elevation = moonElevation(dayNumber + h/24, longitude, latitude);
-	console.log(div(dayNumber) + h/24, longitude, latitude, elevation);
-	
-	elevations.push(elevation);
+    const elevation = moonElevation(dayNumber + h/24, longitude, latitude);
+    elevations.push(elevation);
   }
   return elevations;
 }

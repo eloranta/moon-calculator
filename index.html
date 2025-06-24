@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script><link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <head>
+    <link rel="stylesheet" href="styles.css">
     <title>Moon Elevation by OH2LHE/OG3Z</title>
   </head>
   <body>
     <h1>Moon Elevation by OH2LHE/OG3Z</h1>
     <div>
       <label for="myLocator">My Locator:</label>
-      <input type="text" placeholder="6 chars locator" id="myLocator" value="" maxlength="6" required />
+      <input type="text" placeholder="6 chars locator" id="myLocator" value="" maxlength="6" style="text-transform: uppercase;"/>
       <label for="dxLocator">DX Locator:</label>
-      <input type="text" id="dxLocator" value="mm00mm" maxlength="6" required /> <!-- remove initial value later?-->
+      <input type="text" placeholder="6 chars locator" id="dxLocator" value="" maxlength="6" style="text-transform: uppercase;"/>
       <label for="date">Date:</label>
       <input type="date" id="date" required />
     </div>
 
     <canvas id="myChart" class="chart-canvas"></canvas>
+
 <!--
     <div>
       <label>My locator:</label>

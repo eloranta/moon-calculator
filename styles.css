@@ -1,3 +1,17 @@
+h1 {
+  text-align: center;
+  color: blue;
+}
+
+::placeholder {
+  text-transform: none; /* ensure placeholder stays lowercase if global styles exist */
+}
+
+.error {
+  background-color: #ffcccc; 
+}
+
+
 /* :root {
   --chart-0-border: green;
   --chart-0-fill: lightgreen;
